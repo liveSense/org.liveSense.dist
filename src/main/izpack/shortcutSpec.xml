@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+
+<shortcuts>
+
+    <skipIfNotSupported />
+
+    <programGroup defaultName="liveSense @build.number@" location="applications" />
+
+    
+      <shortcut
+         name="liveSense"
+         programGroup="yes"
+         desktop="yes"
+         applications="no"
+         startMenu="no"
+         startup="no"
+         target="$INSTALL_PATH\bin\start.bat"
+         commandLine=""
+         description="liveSense portal"
+         iconFile="$INSTALL_PATH\bin\icons\liveSense.ico"
+         iconIndex="0"
+         initialState="noShow">
+
+         <createForPack name="Portal"/>
+
+       </shortcut>
+ 
+    <shortcut
+            name="liveSense portal @ver@ Uninstaller"
+            programGroup="yes"
+            desktop="no"
+            applications="no"
+            startMenu="no"
+            startup="no"
+            target="$INSTALL_PATH\Uninstaller\uninstaller.jar"
+            commandLine=""
+            iconFile="%SystemRoot%\system32\SHELL32.dll"
+            iconIndex="31"
+            description="This uninstalls liveSense portal @build.number@">
+
+        <createForPack name="liveSense" />
+    </shortcut>
+
+</shortcuts>
