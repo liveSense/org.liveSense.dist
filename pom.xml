@@ -1,26 +1,33 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<groupId>com.github.livesense</groupId>
-	<version>1.0.0</version>
-	<modelVersion>4.0.0</modelVersion>
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<parent>
+		<groupId>com.github.livesense</groupId>
+		<artifactId>org.liveSense.parent</artifactId>
+		<version>2-SNAPSHOT</version>
+		<relativePath>../org.liveSense.parent/pom.xml</relativePath>
+	</parent>
 
 	<artifactId>org.liveSense.dist</artifactId>
-	<name>liveSense portal installer</name>
+	<packaging>pom</packaging>
+	<version>1.0.0-SNAPSHOT</version>
 
+	<modelVersion>4.0.0</modelVersion>
+	<properties>
+		<staging.dir>${project.build.directory}\staging</staging.dir>
+		<izpack.version>5.0.0-beta10</izpack.version>
+	</properties>
+
+	<modules>
+		<module>org.liveSense.dist.repositoryinstaller</module>
+	</modules>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.maven.plugin-testing</groupId>
 			<artifactId>maven-plugin-testing-harness</artifactId>
 			<version>2.0-alpha-1</version>
 		</dependency>
-		<dependency>
-			<groupId>com.github.livesense</groupId>
-			<artifactId>org.liveSense.launchpad</artifactId>
-			<version>${project.version}</version>
-			<classifier>standalone</classifier>
-		</dependency>
-
 		<dependency>
 			<groupId>org.codehaus.izpack</groupId>
 			<artifactId>izpack-ant</artifactId>
@@ -46,80 +53,86 @@
 			<artifactId>izpack-event</artifactId>
 			<version>${izpack.version}</version>
 		</dependency>
+
 	</dependencies>
 
-	<properties>
-		<izpack.version>5.0.0-beta4-SNAPSHOT</izpack.version>
-		<staging.dir>${basedir}/target/staging/</staging.dir>
-	</properties>
-
 	<build>
-		<resources>
-			<resource>
-				<directory>src/main/izpack</directory>
-				<filtering>true</filtering>
-			</resource>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
 		<plugins>
+
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.4.2</version>
 				<executions>
 					<execution>
-						<id>copy-izpack-resource</id>
+						<id>copy-resources</id>
 						<phase>validate</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
+							<encoding>UTF-8</encoding>
 							<outputDirectory>${staging.dir}</outputDirectory>
 							<resources>
 								<resource>
-									<directory>src/main/izpack</directory>
+									<directory>src/main/resources</directory>
 								</resource>
 								<resource>
-									<directory>src/main/resources</directory>
+									<directory>src/main/izpack</directory>
 								</resource>
 							</resources>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+
 			<plugin>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>Unpack izpack utils</id>
+						<id>copy-launchpad</id>
 						<phase>process-resources</phase>
 						<goals>
-							<goal>unpack-dependencies</goal>
+							<goal>copy</goal>
 						</goals>
 						<configuration>
-							<includeArtifactIds>izpack-utils</includeArtifactIds>
-							<excludeTransitive>true</excludeTransitive>
-							<outputDirectory>${staging.dir}</outputDirectory>
-						</configuration>
-					</execution>
-					<execution>
-						<id>Copy libs</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<!-- <excludeArtifactIds>izpack-utils</excludeArtifactIds> -->
-							<includeArtifactIds>org.liveSense.launchpad</includeArtifactIds>
-							<outputDirectory>${staging.dir}/lib</outputDirectory>
-							<includeScope>runtime</includeScope>
+							<artifactItems>
+								<artifactItem>
+									<groupId>com.github.livesense</groupId>
+									<artifactId>org.liveSense.launchpad</artifactId>
+									<version>${liveSense.launchpad.version}</version>
+									<classifier>standalone</classifier>
+									<outputDirectory>${staging.dir}</outputDirectory>
+									<destFileName>launchpad.jar</destFileName>
+								</artifactItem>
+							</artifactItems>
 						</configuration>
 					</execution>
 
+					<execution>
+						<id>copy-repositoryinstaller</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>com.github.livesense</groupId>
+									<artifactId>org.liveSense.dist.repositoryinstaller</artifactId>
+									<version>${project.version}</version>
+									<outputDirectory>${staging.dir}</outputDirectory>
+									<destFileName>repositoryinstaller.jar</destFileName>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
 				</executions>
+
 			</plugin>
-			<!-- Launch izpack compilation -->
+        <!-- this makes maven to compile and package your related izpack sources into a predictable name and location
+                 ie your target directory's ${project.artifactId}.jar, to that you can configure your izpack descriptor
+                 to merge it to finally installer via <jar> tag
+        -->
 			<plugin>
 				<groupId>org.codehaus.izpack</groupId>
 				<artifactId>izpack-maven-plugin</artifactId>
@@ -130,83 +143,85 @@
 						<goals>
 							<goal>izpack</goal>
 						</goals>
+						<configuration>
+							<izpackBasedir>${staging.dir}</izpackBasedir>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 
-			<!-- Project sources generation -->
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<descriptors>
-						<descriptor>src/assembly/assembly.xml</descriptor>
-					</descriptors>
-					<outputDirectory>${staging.dir}</outputDirectory>
-					<finalName>liveSense</finalName>
-				</configuration>
-				<executions>
-					<execution>
-						<id>make-assembly</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>osxappbundle-maven-plugin</artifactId>
-				<version>1.0-alpha-2</version>
-				<configuration>
-					<mainClass>com.izforge.izpack.installer.bootstrap.Installer</mainClass>
-					<javaApplicationStub>${basedir}/src/main/app-resources/JavaApplicationStub</javaApplicationStub>
-					<includeProjectArtifact>false</includeProjectArtifact>
-					<includeProjectDependencies>false</includeProjectDependencies>
 
-					<additionalDependencies>
-						<path>${basedir}/target/${project.artifactId}-${project.version}-installer.jar</path>
-					</additionalDependencies>
-
-					<!-- <javaApplicationStub>/System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub</javaApplicationStub> -->
-				</configuration>
-
-				<executions>
-					<execution>
-						<id>create-osx-bundle-jar</id>
-						<goals>
-							<goal>bundle</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
+<!-- 
 			<plugin>
 				<groupId>org.bluestemsoftware.open.maven.plugin</groupId>
 				<artifactId>launch4j-plugin</artifactId>
 				<version>1.5.0.0</version>
-				<configuration>
-					<dontWrapJar>false</dontWrapJar>
-					<headerType>gui</headerType>
-					<outfile>${basedir}/target/${project.artifactId}-${project.version}-installer.exe</outfile>
-					<jar>${basedir}/target/${project.artifactId}-${project.version}-installer.jar</jar>
-					<errTitle>alakai</errTitle>
-					<jre>
-						<minVersion>1.6.0</minVersion>
-					</jre>
-				</configuration>
 				<executions>
+
+				</!/-/- GUI exe /-/-/>
 					<execution>
-						<id>launch4j</id>
-						<phase>verify</phase>
+						<id>l4j-gui</id>
+						<phase>package</phase>
 						<goals>
 							<goal>launch4j</goal>
 						</goals>
+						<configuration>
+							<headerType>gui</headerType>
+							<outfile>target/${artifactId}-${version}-gui.exe</outfile>
+							<jar>target/${artifactId}-${version}-installer.jar</jar> </!/-/- 'shaded' is the value set on shadedClassifierName above /-/-/>
+							<errTitle>App Err</errTitle>
+							<classPath>
+								<mainClass>com.izforge.izpack.installer.bootstrap.Installer</mainClass>
+							</classPath>
+							</!/-/- <icon>src/main/resources/icons/exeIcon.ico</icon> /-/-/>
+							<jre>
+								<minVersion>1.6.0</minVersion>
+								<maxVersion>1.7.0</maxVersion>
+								<initialHeapSize>128</initialHeapSize>
+								<maxHeapSize>1024</maxHeapSize>
+							</jre>
+							<versionInfo>
+								<fileVersion>1.0.0.0</fileVersion>
+								<txtFileVersion>1.0.0.0</txtFileVersion>
+								<fileDescription>Desc</fileDescription>
+								<copyright>C</copyright>
+								<productVersion>1.0.0.0</productVersion>
+								<txtProductVersion>1.0.0.0</txtProductVersion>
+								<productName>Product</productName>
+								<internalName>Product</internalName>
+								<originalFilename>App.exe</originalFilename>
+							</versionInfo>
+						</configuration>
+					</execution>
+-->
+					<!-- Command-line exe -->
+<!-- 					<execution>
+						<id>l4j-cli</id>
+						<phase>package</phase>
+						<goals>
+							<goal>launch4j</goal>
+						</goals>
+						<configuration>
+							<headerType>console</headerType>
+							<outfile>target/app-cli.exe</outfile>
+							<jar>target/${artifactId}-${version}-shaded.jar</jar> </!/-/- 'shaded' is the value set on shadedClassifierName above /-/-/>
+							<errTitle>App Err</errTitle>
+							<classPath>
+								<mainClass>package.AppCLI</mainClass>
+							</classPath>
+							<icon>src/main/resources/icons/exeIcon.ico</icon>
+							<jre>
+								<minVersion>1.5.0</minVersion>
+								<maxVersion>1.6.0</maxVersion>
+								<initialHeapSize>128</initialHeapSize>
+								<maxHeapSize>1024</maxHeapSize>
+							</jre>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+-->
 		</plugins>
 	</build>
-
 </project>

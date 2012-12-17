@@ -1,0 +1,36 @@
+<userInput>
+	<panel order="0">
+		<field type="staticText" align="left" txt="Select the path where data will be stored." id="staticText.registry.db.data.text"/>
+		<field type="dir" align="left" variable="data.dir">
+			<spec txt="Data directory" size="25" set="$USER_HOME/liveSenseData" mustExist="false" create="true"/>
+		</field>
+	</panel>
+	<panel order="1">
+	
+		<field type="staticText" align="left" txt="Select the port where the server will listen. (You can change it later in conf/wrapper.conf)" id="staticText.registry.port.text"/>
+		<field type="text" align="left" variable="server.port">
+			<spec txt="Server port" size="5" set="8080" layout="N 1:5"/>
+		</field>
+		<field type="staticText" align="left" txt="Set the admin user password." id="staticText.registry.password.text"/>
+		<field type="password" align="left" variable="admin.password">
+			<spec>
+				<pwd txt="The Password:" size="25" set=""/>
+				<pwd txt="Retype Password:" size="25" set=""/>
+			</spec>
+			<validator class="com.izforge.izpack.panels.userinput.validator.PasswordEqualityValidator" txt="Both passwords must match." id="staticText.registry.password.must.match"/>
+		</field>
+		<field type="staticText" align="left" txt="Select the amount of memory usage. If you unsure, do let the default values.(You can change it later in conf/wrapper.conf)" id="staticText.registry.port.text"/>
+		<field type="text" align="left" variable="jvm.minheapmem">
+			<spec txt="Minimal heap memory usage in Megabyte" size="5" set="512" layout="N 1:5"/>
+		</field>
+		<field type="text" align="left" variable="jvm.maxheapmem">
+			<spec txt="Maximum heap memory usage in Megabyte" size="5" set="1536" layout="N 1:5"/>
+		</field>
+		<field type="text" align="left" variable="jvm.minpermmem">
+			<spec txt="Maximum permGen memory usage in Megabyte" size="5" set="64" layout="N 1:5"/>
+		</field>
+		<field type="text" align="left" variable="jvm.maxpermmem">
+			<spec txt="Maximum permGen memory usage in Megabyte" size="5" set="256" layout="N 1:5"/>
+		</field>
+	</panel>
+</userInput>

@@ -1,0 +1,10 @@
+.svn
+/target
+/war
+/.settings
+/.project
+/.classpath
+/nbactions.xml
+/src/main/resources/projects
+/src/main/resources/data
+

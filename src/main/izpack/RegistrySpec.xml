@@ -32,7 +32,7 @@
     </pack>
     <pack name="Core">
         <key
-                keypath="SOFTWARE\liveSense\portal\$UNINSTALL_NAME\ЮникодТестКлюч"
+                keypath="SOFTWARE\libra\RemoteInvoice\$UNINSTALL_NAME\ЮникодТестКлюч"
                 root="HKLM" />
         <value name="Path"
                keypath="SOFTWARE\liveSense\portal\$UNINSTALL_NAME"

@@ -1,0 +1,39 @@
+<processing>
+	<logfiledir>$INSTALL_PATH</logfiledir>
+	<job name="Set DB Permission" workingDir="$INSTALL_PATH">
+		<os family="unix"/>
+		<executefile name="$INSTALL_PATH/bin/setDbPermission.sh"/>
+	</job>
+
+	<job name="ChangeAdminPassword">
+		<executeclass name="hu.libra.libraweb.remoteinvoice.dist.repositoryinstaller.ChangeAdminPassword">
+			<arg>$data.dir/jackrabbit</arg>
+			<arg>$admin.password</arg>
+		</executeclass>
+	</job>
+	<job name="Install Service" workingDir="$INSTALL_PATH">
+		<os family="windows"/>
+		<executefile name="$INSTALL_PATH\bat\installService.bat"/>
+	</job>
+	<job name="Start Service" workingDir="$INSTALL_PATH">
+		<os family="windows"/>
+		<executefile name="$INSTALL_PATH\bat\startService.bat"/>
+	</job>
+
+<!-- 
+	<job name="Start Service" workingDir="$INSTALL_PATH">
+		<os family="windows"/>
+		<executefile name="$INSTALL_PATH/bat/startService.bat"/>
+	</job>
+-->
+	<job name="Install Service" workingDir="$INSTALL_PATH">
+		<os family="unix"/>
+		<executefile name="$INSTALL_PATH/bin/installDaemon.sh"/>
+	</job>
+	<job name="Start daemon" workingDir="$INSTALL_PATH">
+		<os family="unix"/>
+		<executefile name="$INSTALL_PATH/bin/startDaemon.sh"/>
+	</job>
+	<onFail previous="false" next="false"/>
+	<onSuccess previous="false" next="true"/>
+</processing>
