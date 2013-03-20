@@ -1,4 +1,4 @@
-package hu.libra.libraweb.remoteinvoice.dist.repositoryinstaller;
+package org.liveSense.dist.repositoryinstaller;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -46,7 +46,7 @@ public class ChangeAdminPassword {
 		String password = args[1];
 		log.info("Log dir: "+dir);
 		log.info("Password: "+password);
-		
+
 		RepositoryConfig config = null;
 		RepositoryImpl repository = null;
 		try {
