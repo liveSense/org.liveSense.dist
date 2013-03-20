@@ -28,8 +28,8 @@
 
 		<dependency>
 			<groupId>com.github.livesense</groupId>
-			<artifactId>org.liveSense.fragment.jackrabbit.server.ddl</artifactId>
-			<version>${liveSense.fragment.jackrabbit.server.ddl.version}</version>
+			<artifactId>org.liveSense.fragment.jackrabbit.server.jaybird.ddl</artifactId>
+			<version>${liveSense.fragment.jackrabbit.server.jaybird.ddl.version}</version>
 		</dependency>
 
 		<dependency>
