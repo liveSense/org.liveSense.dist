@@ -6,7 +6,7 @@
 		<groupId>com.github.livesense</groupId>
 		<artifactId>org.liveSense.parent</artifactId>
 		<version>2-SNAPSHOT</version>
-		<relativePath>../org.liveSense.parent/pom.xml</relativePath>
+		<relativePath>..</relativePath>
 	</parent>
 
 	<artifactId>org.liveSense.dist</artifactId>

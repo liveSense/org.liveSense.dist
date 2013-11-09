@@ -6,12 +6,12 @@
 		<groupId>com.github.livesense</groupId>
 		<artifactId>org.liveSense.parent</artifactId>
 		<version>2-SNAPSHOT</version>
-		<relativePath>../../org.liveSense.parent/pom.xml</relativePath>
+		<relativePath>../..</relativePath>
 	</parent>
 
 	<artifactId>org.liveSense.dist.repositoryinstaller</artifactId>
 	<packaging>bundle</packaging>
-	<version>${liveSense.dist.version}</version>
+	<!--<version>${liveSense.dist.version}</version>-->
 	<properties>
 		<izpack.version>5.0.0-beta10</izpack.version>
 	</properties>
