@@ -8,6 +8,11 @@
 		<version>2-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
+	<scm>
+		<connection>scm:git:https://github.com/liveSense/org.liveSense.dist.git</connection>
+		<developerConnection>scm:git:https://github.com/liveSense/org.liveSense.dist.git</developerConnection>
+		<url>https://github.com/liveSense/org.liveSense.dist</url>
+	</scm>
 
 	<artifactId>org.liveSense.dist</artifactId>
 	<packaging>pom</packaging>
